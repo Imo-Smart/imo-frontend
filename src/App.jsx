@@ -7,16 +7,26 @@ import AdminRouter from './components/AdminRouter'
 
 import Home from './pages/Home'
 import SignIn from './pages/SignIn'
+import SignUp from './pages/SignUp'
+import Contact from './pages/Contact'
+import About from './pages/About'
 import Dashboard from './pages/Dashboard'
+import Footer from './components/Footer'
+
+import Head from './components/Head'
+import { ChatBox } from './components/ChatBox'
 
 export function App() {
   return (
     <>
-
       <BrowserRouter>
+        <Head />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
           <Route
             path="/admin/dashboard"
             element={
@@ -38,7 +48,9 @@ export function App() {
           pauseOnHover
           theme="dark"
         />
+        <ChatBox />
       </BrowserRouter>
+      <Footer />
     </>
   )
 }

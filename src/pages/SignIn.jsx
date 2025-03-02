@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 import { getError } from '../service/utils'
 
 import imgSmart from '../assets/logo.png'
+import imgHouse2 from '../assets/imgHouse2.jpg'
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
@@ -47,20 +48,30 @@ export default function SignIn() {
   }, [navigate, redirect, userInfo])
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900">
-      <div className="w-full max-w-md p-4">
+    <section className="relative w-full h-screen flex items-center justify-center">
+      {/* IMAGEM DE FUNDO */}
+      <img className="absolute w-full h-full object-cover" src={imgHouse2} alt="Casa" />
+
+      {/* SOBREPOSIÇÃO ESCURA PARA MELHORAR VISIBILIDADE */}
+      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+
+      {/* FORMULÁRIO CENTRALIZADO */}
+      <div className="relative z-10 bg-gray-900 bg-opacity-80 p-8 w-full max-w-md mx-auto rounded-lg shadow-lg">
         <Helmet>
-          <title>ImoSmart | Entrar</title>
+          <title>Imosmart | Entrar</title>
         </Helmet>
-        <img className="mx-auto mb-5 img" src={imgSmart} alt="LogoImoSmart" />
+
+        <div className="text-center mb-6">
+          <img className="mx-auto mb-4 w-40" src={imgSmart} alt="LogoSmart" />
+        </div>
 
         <form onSubmit={submitHandler}>
           <div className="mb-4">
             <input
-              placeholder="Seu melhor email"
+              placeholder="Seu email"
               type="email"
               id="email"
-              className="w-full border rounded px-3 py-2 placeholder-gray-400 bg-gray-600 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-blue-500"
+              className="w-full border rounded px-3 py-2 placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-blue-500"
               onChange={(e) => setEmail(e.target.value)}
               required
             />
@@ -69,41 +80,37 @@ export default function SignIn() {
           <div className="mb-4 relative">
             <input
               placeholder="Digite sua senha"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               id="password"
-              className="w-full border rounded px-3 py-2 placeholder-gray-400 bg-gray-600 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-blue-500"
+              className="w-full border rounded px-3 py-2 placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-blue-500"
               onChange={(e) => setPassword(e.target.value)}
               required
             />
             <span
-              className="absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer"
+              className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? (
-                <AiFillEyeInvisible color="#111827" />
-              ) : (
-                <AiFillEye color="#111827" />
-              )}
+              {showPassword ? <AiFillEyeInvisible color="#ddd" /> : <AiFillEye color="#ddd" />}
             </span>
           </div>
 
           <div className="mb-4">
             <button
               type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded-md w-full"
+              className="bg-blue-500 text-white py-2 px-4 rounded-md w-full hover:bg-blue-600 transition"
             >
-              Conectar
+              Entrar
             </button>
           </div>
 
-          <div className="mb-4 text-sm text-white text-center">
-            Já tem uma conta?{' '}
-            <Link to={`/`} className="text-blue-500">
+          <div className="text-center text-sm text-gray-300">
+            Não tem uma conta?{" "}
+            <Link to={`/sign-up`} className="text-blue-400 hover:underline">
               Entrar
             </Link>
           </div>
         </form>
       </div>
-    </div>
+    </section>
   )
 }
