@@ -139,7 +139,7 @@ export default function Home() {
 
           <div className="text-center text-sm text-gray-300">
             Já tem uma conta?{" "}
-            <Link to={`/`} className="text-blue-400 hover:underline">
+            <Link to={`/sign-in`} className="text-blue-400 hover:underline">
               Entrar
             </Link>
           </div>

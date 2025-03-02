@@ -106,7 +106,7 @@ export default function SignIn() {
           <div className="text-center text-sm text-gray-300">
             Não tem uma conta?{" "}
             <Link to={`/sign-up`} className="text-blue-400 hover:underline">
-              Entrar
+              Cadastrar
             </Link>
           </div>
         </form>
