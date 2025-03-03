@@ -13,24 +13,13 @@ export default function About() {
         <div className="flex-1 md:mr-20 text-center md:text-left">
           <h1 className="text-4xl font-bold text-gray-100 mb-5">Sobre-nós</h1>
           <p className="text-lg text-gray-400 mb-5 max-w-[80%] mx-auto md:max-w-full">
-            Na Barbershop, estamos comprometidos em oferecer uma experiência
-            única em cuidados masculinos. Fundada pelo talentoso e renomado
-            barbeiro Wes Borland, nossa barbearia se destaca pela paixão e
-            habilidade incomparáveis. Com anos de experiência e expertise no
-            setor, Wes Borland se tornou uma referência no mundo dos cortes de
-            cabelo e barbas estilizadas.
+            A ideia da ImoSmart nasceu da necessidade de modernizar e facilitar o processo de compra, venda e aluguel de imóveis. Muitos proprietários e corretores enfrentavam dificuldades para divulgar seus imóveis de forma eficiente, enquanto compradores e locatários tinham que navegar por plataformas desatualizadas e confusas.
           </p>
           <p className="text-lg text-gray-400 mb-5 max-w-[80%] mx-auto md:max-w-full">
-            Além de oferecer cortes e estilos impecáveis, também nos preocupamos
-            com o bem-estar dos nossos clientes. Utilizamos produtos de alta
-            qualidade, garantindo resultados excepcionais e cuidando da saúde e
-            vitalidade dos cabelos e da pele.
+          Desde o início, o objetivo foi construir uma plataforma intuitiva, onde qualquer pessoa pudesse anunciar ou encontrar imóveis com poucos cliques. Para isso, investimos em um design moderno, filtros inteligentes e integração com mapas interativos, proporcionando uma experiência fluida e eficiente.
           </p>
           <p className="text-lg text-gray-400 mb-5 max-w-[80%] mx-auto md:max-w-full">
-            Na Barbershop, acreditamos que o estilo é uma expressão individual.
-            Valorizamos a singularidade de cada cliente, trabalhando em estreita
-            colaboração para criar looks personalizados que reflitam sua
-            personalidade e realcem sua beleza única.
+            Hoje, a ImoSmart não é apenas um portal de anúncios, mas um ecossistema que conecta pessoas, facilitando negociações seguras e ágeis. Continuamos evoluindo, sempre ouvindo nossos usuários e buscando formas inovadoras de transformar o mercado imobiliário, tornando-o mais acessível e eficiente para todos.
           </p>
 
           <div className="flex justify-between items-center pt-4 flex-wrap">
@@ -44,13 +33,13 @@ export default function About() {
               <h3 className="font-numans text-2xl">
                 <CountUp end={2} start={0} delay={2} />
               </h3>
-              <p>Corretor</p>
+              <p>Corretores</p>
             </div>
             <div className="text-center text-gray-400 w-[180px] p-5 border-2 border-[#FFF] rounded-lg m-2">
               <h3 className="font-numans text-2xl">
                 + <CountUp end={100} start={0} delay={2} />
               </h3>
-              <p>Iméveis</p>
+              <p>Imóveis</p>
             </div>
           </div>
         </div>
