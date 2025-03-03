@@ -74,7 +74,7 @@ export default function Home() {
         <form onSubmit={submitHandler}>
           <div className="mb-4">
             <input
-              placeholder="Como deseja ser chamada"
+              placeholder="Como deseja ser chamado"
               type="text"
               id="name"
               className="w-full border rounded px-3 py-2 placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-blue-500"
