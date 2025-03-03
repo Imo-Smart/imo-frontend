@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -19,7 +19,6 @@ import { ChatBox } from './components/ChatBox'
 export function App() {
   return (
     <>
-      <BrowserRouter>
         <Head />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -49,7 +48,6 @@ export function App() {
           theme="dark"
         />
         <ChatBox />
-      </BrowserRouter>
       <Footer />
     </>
   )

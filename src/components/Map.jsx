@@ -12,8 +12,8 @@ const mapContainerStyle = {
 }
 
 const center = {
-  lat: -23.5620086,
-  lng: -46.667409,
+  lat: -23.1751911,
+  lng: -45.7978691,
 }
 
 const darkMapOptions = {

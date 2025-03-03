@@ -46,7 +46,8 @@ export default function Contact() {
             <h3 className="text-lg font-semibold flex items-center gap-2">
               Endereço <IoLocationOutline size={20} />
             </h3>
-            <p className="text-gray-500 dark:text-gray-400">Rua Antonio Lima, 1000 - Bela Vista, São Paulo</p>
+            <p className="text-gray-500 dark:text-gray-400">Rua João Moreira Borges N°20,<br /> Santa ines l <br />
+            São José dos Campos - SP</p>
           </div>
 
           {/* Contato */}

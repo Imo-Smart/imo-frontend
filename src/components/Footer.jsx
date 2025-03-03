@@ -1,6 +1,8 @@
 import { AiFillFacebook, AiFillInstagram, AiFillTwitterCircle } from "react-icons/ai";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
 
+import { Link } from 'react-router-dom'
+
 import imgLogo from '../assets/logo.png'
 
 export default function Footer() {
@@ -17,14 +19,14 @@ export default function Footer() {
                 <p>Imosmart é uma plataforma para busca de imóveis, sempre à sua disposição.</p>
               </div>
 
-                  <div>
-                      <h4 className="text-lg font-bold mb-4">Links rápidos</h4>
-                      <ul className="space-y-2">
-                          <li><a href="#" className="hover:text-gray-300">Home</a></li>
-                          <li><a href="#" className="hover:text-gray-300">Sobre</a></li>
-                          <li><a href="#" className="hover:text-gray-300">Ofertas</a></li>
-                      </ul>
-                  </div>
+              <div>
+                <h4 className="text-lg font-bold mb-4">Links rápidos</h4>
+                <ul className="space-y-2">
+                  <li><Link to="/" className="hover:text-gray-300">Home</Link></li>
+                  <li><Link to="/about" className="hover:text-gray-300">Sobre</Link></li>
+                  <li><Link to="/offers" className="hover:text-gray-300">Ofertas</Link></li>
+                </ul>
+              </div>
                   <div>
                       <h4 className="text-lg font-bold mb-4">Contato</h4>
                       <ul className="space-y-2">
