@@ -95,6 +95,11 @@ export default function SignIn() {
             Cadastrar
           </Link>
         </div>
+        <div className="text-center text-sm text-gray-300 mt-4">
+          <Link to="/forgot-password" className="text-blue-400 hover:underline">
+            Esqueceu a senha?
+          </Link>
+        </div>
       </div>
     </section>
   );
