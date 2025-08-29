@@ -28,7 +28,7 @@ export default function ForgotPassword() {
       // Aqui você conecta com sua rota de recuperação de senha (exemplo)
       const res = await api.post("/api/users/forgot-password", data);
 
-      toast.success("Se o email estiver cadastrado, enviaremos instruções de recuperação.");
+      toast.success("Email enviado com sucesso.");
       reset();
     } catch (error) {
       toast.error("Erro ao enviar solicitação. Tente novamente.");

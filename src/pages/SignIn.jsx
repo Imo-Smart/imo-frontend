@@ -1,106 +1,77 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import api from "../services/api";
 import { toast } from "react-toastify";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-import api from "../service/api.jsx";
-import imgSmart from "../assets/logo.png";
-import imgHouse2 from "../assets/imgHouse2.jpg";
-
-// Esquema de validação com Yup
 const schema = yup.object().shape({
-  email: yup.string().email("Email inválido").required("Email obrigatório"),
-  password: yup.string().min(6, "Mínimo 6 caracteres").required("Senha obrigatória"),
+  email: yup.string().email("E-mail inválido").required("E-mail é obrigatório"),
+  password: yup.string().min(6, "Mínimo 6 caracteres").required("Senha é obrigatória"),
 });
 
-export default function SignIn() {
-  const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
-  const { search } = useLocation();
-  const redirectInUrl = new URLSearchParams(search).get("redirect");
-  const redirect = redirectInUrl || "/dashboard";
-
-  const { register, handleSubmit, formState: { errors } } = useForm({
+const SignIn = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = async (data) => {
     try {
       const res = await api.post("/api/users/login", data);
-      toast.success("Login realizado com sucesso!");
-      // Salva dados do usuário no localStorage (ou estado global)
-      localStorage.setItem("userInfo", JSON.stringify(res.data));
-      navigate(redirect);
+
+      // pega o nome do usuário retornado pelo backend
+      const userName = res.data?.name || "Usuário";
+
+      toast.success(`👋 Bem-vindo, ${userName}! Login realizado com sucesso!`);
+
+      // se quiser salvar o token e dados
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data));
+
+      // redirecionar para dashboard
+      window.location.href = "/dashboard";
     } catch (err) {
-      toast.error(err.response?.data?.message || "Erro no login");
+      toast.error(err.response?.data?.message || "Erro ao realizar login");
     }
   };
 
   return (
-    <section className="relative w-full h-screen flex items-center justify-center">
-      {/* Imagem de fundo */}
-      <img className="absolute w-full h-full object-cover" src={imgHouse2} alt="Casa" />
-
-      {/* Sobreposição escura */}
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-
-      {/* Formulário */}
-      <div className="relative z-10 bg-gray-900 bg-opacity-80 p-8 w-full max-w-md mx-auto rounded-lg shadow-lg">
-        <div className="text-center mb-6">
-          <img className="mx-auto mb-4 w-40" src={imgSmart} alt="LogoSmart" />
-          <h2 className="text-2xl font-bold text-white">Entrar</h2>
+    <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded-xl shadow-md">
+      <h2 className="text-2xl font-bold mb-4">Entrar</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium">E-mail</label>
+          <input
+            type="email"
+            {...register("email")}
+            className="w-full p-2 border rounded"
+          />
+          <p className="text-red-500 text-sm">{errors.email?.message}</p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <input
-              type="email"
-              placeholder="Seu email"
-              {...register("email")}
-              className="w-full px-3 py-2 rounded-lg border placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-            />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
-          </div>
-
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Digite sua senha"
-              {...register("password")}
-              className="w-full px-3 py-2 rounded-lg border placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-            />
-            <span
-              className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <AiFillEyeInvisible color="#ddd" /> : <AiFillEye color="#ddd" />}
-            </span>
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
-          >
-            Entrar
-          </button>
-        </form>
-
-        <div className="text-center text-sm text-gray-300 mt-4">
-          Não tem uma conta?{" "}
-          <Link to="/sign-up" className="text-blue-400 hover:underline">
-            Cadastrar
-          </Link>
+        <div>
+          <label className="block text-sm font-medium">Senha</label>
+          <input
+            type="password"
+            {...register("password")}
+            className="w-full p-2 border rounded"
+          />
+          <p className="text-red-500 text-sm">{errors.password?.message}</p>
         </div>
-        <div className="text-center text-sm text-gray-300 mt-4">
-          <Link to="/forgot-password" className="text-blue-400 hover:underline">
-            Esqueceu a senha?
-          </Link>
-        </div>
-      </div>
-    </section>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+        >
+          Entrar
+        </button>
+      </form>
+    </div>
   );
-}
+};
+
+export default SignIn;

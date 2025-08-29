@@ -38,7 +38,7 @@ export default function ResetPassword() {
   const onSubmit = async (data) => {
     try {
       // Exemplo de chamada API (ajuste para sua rota backend)
-      const res = await api.post("/api/users/reset-password/id:", data);
+      const res = await api.post("/api/users/reset-password/:token", data);
 
       console.log("Nova senha enviada:", data.password);
 
