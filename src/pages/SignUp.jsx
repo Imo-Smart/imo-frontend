@@ -1,107 +1,84 @@
-import { useContext, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { toast } from "react-toastify";
 
 import api from "../service/api";
-import { Store } from "../service/store";
-import { toast } from "react-toastify";
-import { getError } from "../service/utils";
-
 import imgSmart from "../assets/logo.png";
-import imgHouse4 from "../assets/imgHouse4.jpg";
+import imgHouse2 from "../assets/imgHouse2.jpg";
 
-export default function Home() {
+// Validação com Yup
+const schema = yup.object().shape({
+  name: yup.string().required("Nome obrigatório"),
+  email: yup.string().email("Email inválido").required("Email obrigatório"),
+  password: yup.string().min(6, "Senha mínima 6 caracteres").required("Senha obrigatória"),
+});
+
+export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { search } = useLocation();
-  const redirectInUrl = new URLSearchParams(search).get("redirect");
-  const redirect = redirectInUrl || "/";
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo } = state;
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      toast.error("Senha não está batendo");
-      return;
-    }
+  const onSubmit = async (data) => {
     try {
-      const { data } = await api.post("/api/users/signup", {
-        name,
-        email,
-        password,
-      });
-      ctxDispatch({ type: "USER_SIGNIN", payload: data });
-      localStorage.setItem("userInfo", JSON.stringify(data));
-      navigate("/");
-      toast.success("Usuário criado com sucesso");
+      const res = await api.post("/api/users/register", data);
+      toast.success("Cadastro realizado com sucesso!");
+      navigate("/sign-in");
     } catch (err) {
-      toast.error(getError(err));
+      const message = err.response?.data?.message || "Erro ao cadastrar usuário";
+      toast.error(message);
     }
   };
 
-  useEffect(() => {
-    if (userInfo) {
-      navigate(redirect);
-    }
-  }, [navigate, redirect, userInfo]);
-
   return (
     <section className="relative w-full h-screen flex items-center justify-center">
-      {/* IMAGEM DE FUNDO */}
-      <img className="absolute w-full h-full object-cover" src={imgHouse4} alt="Casa" />
-
-      {/* SOBREPOSIÇÃO ESCURA PARA MELHORAR VISIBILIDADE */}
+      {/* Imagem de fundo */}
+      <img className="absolute w-full h-full object-cover" src={imgHouse2} alt="Casa" />
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
-      {/* FORMULÁRIO CENTRALIZADO */}
       <div className="relative z-10 bg-gray-900 bg-opacity-80 p-8 w-full max-w-md mx-auto rounded-lg shadow-lg">
-        <Helmet>
-          <title>Imosmart | Cadastrar</title>
-        </Helmet>
-
         <div className="text-center mb-6">
           <img className="mx-auto mb-4 w-40" src={imgSmart} alt="LogoSmart" />
+          <h2 className="text-2xl font-bold text-white">Cadastrar</h2>
         </div>
 
-        <form onSubmit={submitHandler}>
-          <div className="mb-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
             <input
-              placeholder="Como deseja ser chamado"
               type="text"
-              id="name"
-              className="w-full border rounded px-3 py-2 placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-blue-500"
-              onChange={(e) => setName(e.target.value)}
-              required
+              placeholder="Seu nome"
+              {...register("name")}
+              className="w-full px-3 py-2 rounded-lg border placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             />
+            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
           </div>
 
-          <div className="mb-4">
+          <div>
             <input
-              placeholder="Seu melhor email"
               type="email"
-              id="email"
-              className="w-full border rounded px-3 py-2 placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-blue-500"
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              placeholder="Seu email"
+              {...register("email")}
+              className="w-full px-3 py-2 rounded-lg border placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
           </div>
 
-          <div className="mb-4 relative">
+          <div className="relative">
             <input
+              type={showPassword ? "text" : "password"}
               placeholder="Digite sua senha"
-              type={showPassword ? "text" : "password"}
-              id="password"
-              className="w-full border rounded px-3 py-2 placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-blue-500"
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              {...register("password")}
+              className="w-full px-3 py-2 rounded-lg border placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             />
             <span
               className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
@@ -109,41 +86,23 @@ export default function Home() {
             >
               {showPassword ? <AiFillEyeInvisible color="#ddd" /> : <AiFillEye color="#ddd" />}
             </span>
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
           </div>
 
-          <div className="mb-4 relative">
-            <input
-              placeholder="Confirmar senha"
-              type={showPassword ? "text" : "password"}
-              id="confirmPassword"
-              className="w-full border rounded px-3 py-2 placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-blue-500"
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-            <span
-              className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <AiFillEyeInvisible color="#ddd" /> : <AiFillEye color="#ddd" />}
-            </span>
-          </div>
-
-          <div className="mb-4">
-            <button
-              type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded-md w-full hover:bg-blue-600 transition"
-            >
-              Cadastrar
-            </button>
-          </div>
-
-          <div className="text-center text-sm text-gray-300">
-            Já tem uma conta?{" "}
-            <Link to={`/sign-in`} className="text-blue-400 hover:underline">
-              Entrar
-            </Link>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
+          >
+            Cadastrar
+          </button>
         </form>
+
+        <div className="text-center text-sm text-gray-300 mt-4">
+          Já tem uma conta?{" "}
+          <Link to="/sign-in" className="text-blue-400 hover:underline">
+            Entrar
+          </Link>
+        </div>
       </div>
     </section>
   );

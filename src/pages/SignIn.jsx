@@ -1,90 +1,76 @@
-import { useContext, useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { toast } from "react-toastify";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-import api from '../service/api.jsx'
+import api from "../service/api.jsx";
+import imgSmart from "../assets/logo.png";
+import imgHouse2 from "../assets/imgHouse2.jpg";
 
-import { Store } from '../service/store'
-import { toast } from 'react-toastify'
-import { getError } from '../service/utils'
-
-import imgSmart from '../assets/logo.png'
-import imgHouse2 from '../assets/imgHouse2.jpg'
+// Esquema de validação com Yup
+const schema = yup.object().shape({
+  email: yup.string().email("Email inválido").required("Email obrigatório"),
+  password: yup.string().min(6, "Mínimo 6 caracteres").required("Senha obrigatória"),
+});
 
 export default function SignIn() {
-  const [showPassword, setShowPassword] = useState(false)
-  const navigate = useNavigate()
-  const { search } = useLocation()
-  const redirectInUrl = new URLSearchParams(search).get('redirect')
-  const redirect = redirectInUrl || '/'
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const redirectInUrl = new URLSearchParams(search).get("redirect");
+  const redirect = redirectInUrl || "/dashboard";
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-  const { state, dispatch: ctxDispatch } = useContext(Store)
-  const { userInfo } = state
-  const submitHandler = async (e) => {
-    e.preventDefault()
-
+  const onSubmit = async (data) => {
     try {
-      const { data } = await api.post('/api/users/signin', {
-        email,
-        password,
-      })
-      ctxDispatch({ type: 'USER_SIGNIN', payload: data })
-      localStorage.setItem('userInfo', JSON.stringify(data))
-      navigate('/admin/dashboard')
-      toast.success(`Bem vindo`)
+      const res = await api.post("/api/users/login", data);
+      toast.success("Login realizado com sucesso!");
+      // Salva dados do usuário no localStorage (ou estado global)
+      localStorage.setItem("userInfo", JSON.stringify(res.data));
+      navigate(redirect);
     } catch (err) {
-      toast.error(getError(err))
+      toast.error(err.response?.data?.message || "Erro no login");
     }
-  }
-
-  useEffect(() => {
-    if (userInfo) {
-      navigate(redirect)
-    }
-  }, [navigate, redirect, userInfo])
+  };
 
   return (
     <section className="relative w-full h-screen flex items-center justify-center">
-      {/* IMAGEM DE FUNDO */}
+      {/* Imagem de fundo */}
       <img className="absolute w-full h-full object-cover" src={imgHouse2} alt="Casa" />
 
-      {/* SOBREPOSIÇÃO ESCURA PARA MELHORAR VISIBILIDADE */}
+      {/* Sobreposição escura */}
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
-      {/* FORMULÁRIO CENTRALIZADO */}
+      {/* Formulário */}
       <div className="relative z-10 bg-gray-900 bg-opacity-80 p-8 w-full max-w-md mx-auto rounded-lg shadow-lg">
-        <Helmet>
-          <title>Imosmart | Entrar</title>
-        </Helmet>
-
         <div className="text-center mb-6">
           <img className="mx-auto mb-4 w-40" src={imgSmart} alt="LogoSmart" />
+          <h2 className="text-2xl font-bold text-white">Entrar</h2>
         </div>
 
-        <form onSubmit={submitHandler}>
-          <div className="mb-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
             <input
-              placeholder="Seu email"
               type="email"
-              id="email"
-              className="w-full border rounded px-3 py-2 placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-blue-500"
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              placeholder="Seu email"
+              {...register("email")}
+              className="w-full px-3 py-2 rounded-lg border placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
           </div>
 
-          <div className="mb-4 relative">
+          <div className="relative">
             <input
-              placeholder="Digite sua senha"
               type={showPassword ? "text" : "password"}
-              id="password"
-              className="w-full border rounded px-3 py-2 placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-blue-500"
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              placeholder="Digite sua senha"
+              {...register("password")}
+              className="w-full px-3 py-2 rounded-lg border placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
             />
             <span
               className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
@@ -92,25 +78,24 @@ export default function SignIn() {
             >
               {showPassword ? <AiFillEyeInvisible color="#ddd" /> : <AiFillEye color="#ddd" />}
             </span>
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
           </div>
 
-          <div className="mb-4">
-            <button
-              type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded-md w-full hover:bg-blue-600 transition"
-            >
-              Entrar
-            </button>
-          </div>
-
-          <div className="text-center text-sm text-gray-300">
-            Não tem uma conta?{" "}
-            <Link to={`/sign-up`} className="text-blue-400 hover:underline">
-              Cadastrar
-            </Link>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
+          >
+            Entrar
+          </button>
         </form>
+
+        <div className="text-center text-sm text-gray-300 mt-4">
+          Não tem uma conta?{" "}
+          <Link to="/sign-up" className="text-blue-400 hover:underline">
+            Cadastrar
+          </Link>
+        </div>
       </div>
     </section>
-  )
+  );
 }
