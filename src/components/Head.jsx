@@ -1,98 +1,213 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { LuLogIn } from 'react-icons/lu'
+// src/components/Header.jsx
+import { useState, useContext, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
+import { AiOutlineMenu, AiOutlineClose, AiOutlineUser } from "react-icons/ai";
 
-import imgLogo from '../assets/logo.png'
+import imgLogo from "../assets/logo.png";
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false)
+export default function Header() {
+  const { user, setUser } = useContext(UserContext);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("userInfo");
+    navigate("/sign-in");
+    setDropdownOpen(false);
+    setMobileMenuOpen(false);
+  };
+
+  // Fecha dropdown ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const menuLinks = [
+    { name: "Início", to: "/" },
+    { name: "Imóveis", to: "/properties" },
+    { name: "Sobre", to: "/about" },
+    { name: "Contato", to: "/contact" },
+  ];
 
   return (
-    <header>
-      <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
-        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-          <Link to="/" className="flex items-center">
-            <img
-              src={imgLogo}
-              alt="logo"
-              className="h-12 cursor-pointer w-14"
-            />
-            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-              ImoSmart
-            </span>
-          </Link>
-          <div className="flex items-center lg:order-2">
+    <header className="bg-blue-950 shadow-md fixed top-0 left-0 w-full z-50">
+      <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2">
+          <img src={imgLogo} alt="Logo Imosmart" className="w-10 h-10 object-contain" />
+          <span className="text-2xl font-bold text-white">Imosmart</span>
+        </Link>
+
+        {/* Desktop Menu */}
+        <nav className="hidden md:flex items-center space-x-6 relative">
+          {menuLinks.map((link) => (
+            <Link key={link.to} to={link.to} className="text-white hover:text-blue-300 transition">
+              {link.name}
+            </Link>
+          ))}
+
+          {user && (
+            <div className="relative bg-blue-950" ref={dropdownRef}>
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex items-center gap-1 text-white hover:text-blue-300 transition"
+              >
+                <AiOutlineUser size={20} /> {user.name}
+              </button>
+
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50 animate-slideDown">
+                  {user.isAdmin && (
+                    <>
+                      <Link
+                        to="/create-property"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Criar Imóvel
+                      </Link>
+                      <Link
+                        to="/chat-admin"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Chat
+                      </Link>
+                      <Link
+                        to="admin/properties"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Gerenciar Imóveis
+                      </Link>
+                      <Link
+                        to="admin/users"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Usuários
+                      </Link>
+                    </>
+                  )}
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    Perfil
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Sair
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {!user && (
             <Link
               to="/sign-in"
-              className="flex items-center space-x-2 text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
-              title="Entrar"
+              className="text-white font-medium  hover:text-blue-300 transition"
             >
-              <LuLogIn size={20} />
-              <span>Entrar</span>
+              Entrar
             </Link>
+          )}
+        </nav>
 
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-            >
-              <span className="sr-only">Open main menu</span>
-              {isOpen ? (
-                <svg
-                  className="w-6 h-6"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="w-6 h-6"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              )}
-            </button>
-          </div>
-        </div>
-        <div
-  className={`${
-    isOpen ? "flex" : "hidden"
-  } justify-center items-center w-full lg:flex lg:w-auto lg:order-1`}
->
-  <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-    {[
-      { name: "Home", link: "/" },
-      { name: "Ofertas", link: "/ofertas" },
-      { name: "Sobre", link: "/about" },
-      { name: "Contato", link: "/contact" },
-    ].map((item, index) => (
-      <li key={index}>
-        <Link
-          to={item.link}
-          className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden p-2 text-white"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          {item.name}
-        </Link>
-      </li>
-    ))}
-  </ul>
-</div>
+          {mobileMenuOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
+        </button>
+      </div>
 
-      </nav>
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white shadow-md border-t border-gray-200">
+          <nav className="flex flex-col space-y-2 py-4 px-6">
+            {menuLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="hover:text-blue-600"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+
+            {user && user.isAdmin && (
+              <>
+                <Link to="/create-property" className="hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
+                  Criar Imóvel
+                </Link>
+                <Link to="/chat-admin" className="hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
+                  Chat
+                </Link>
+                <Link to="admin/properties" className="hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
+                  Gerenciar Imóveis
+                </Link>
+                <Link to="admin/users" className="hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
+                  Usuários
+                </Link>
+              </>
+            )}
+
+            {user && (
+              <Link to="/profile" className="flex items-center gap-1 hover:text-blue-600" onClick={() => setMobileMenuOpen(false)}>
+                <AiOutlineUser size={18} /> {user.name}
+              </Link>
+            )}
+
+            {user && (
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+              >
+                Sair
+              </button>
+            )}
+
+            {!user && (
+              <Link
+                to="/sign-in"
+                className="text-blue-600 font-medium hover:underline"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Entrar
+              </Link>
+            )}
+          </nav>
+        </div>
+      )}
+
+      {/* animação simples com Tailwind */}
+      <style>
+        {`
+          .animate-slideDown {
+            animation: slideDown 0.2s ease-out forwards;
+          }
+          @keyframes slideDown {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+          }
+        `}
+      </style>
     </header>
-  )
+  );
 }
-
-export default Navbar

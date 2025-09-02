@@ -41,69 +41,93 @@ export default function SignUp() {
   };
 
   return (
-    <section className="relative w-full h-screen flex items-center justify-center">
-      {/* Imagem de fundo */}
-      <img className="absolute w-full h-full object-cover" src={imgHouse2} alt="Casa" />
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+    <div className="h-screen w-screen relative">
+      {/* Background com overlay escuro + gradiente */}
+      <img
+        className="absolute inset-0 w-full h-full object-cover"
+        src={imgHouse2}
+        alt="Casa"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80 backdrop-blur-sm"></div>
 
-      <div className="relative z-10 bg-gray-900 bg-opacity-80 p-8 w-full max-w-md mx-auto rounded-lg shadow-lg">
-        <div className="text-center mb-6">
-          <img className="mx-auto mb-4 w-40" src={imgSmart} alt="LogoSmart" />
-          <h2 className="text-2xl font-bold text-white">Cadastrar</h2>
-        </div>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <input
-              type="text"
-              placeholder="Seu nome"
-              {...register("name")}
-              className="w-full px-3 py-2 rounded-lg border placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-            />
-            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+      {/* Card central */}
+      <div className="relative z-10 flex items-center justify-center h-full">
+        <div className="bg-gray-900/80 backdrop-blur-md p-8 w-full max-w-md rounded-2xl shadow-2xl border border-gray-700 animate-fadeIn">
+          <div className="text-center mb-6">
+            <img className="mx-auto mb-4 w-32" src={imgSmart} alt="LogoSmart" />
+            <h2 className="text-3xl font-bold text-white">Cadastrar</h2>
+            <p className="text-gray-400 text-sm">Crie sua conta para começar</p>
           </div>
 
-          <div>
-            <input
-              type="email"
-              placeholder="Seu email"
-              {...register("email")}
-              className="w-full px-3 py-2 rounded-lg border placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-            />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
-          </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Nome */}
+            <div>
+              <input
+                type="text"
+                placeholder="Seu nome"
+                {...register("name")}
+                className="w-full px-4 py-3 rounded-lg border border-gray-600 placeholder-gray-400 bg-gray-800 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition"
+              />
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+              )}
+            </div>
 
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Digite sua senha"
-              {...register("password")}
-              className="w-full px-3 py-2 rounded-lg border placeholder-gray-400 bg-gray-700 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-            />
-            <span
-              className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
+            {/* Email */}
+            <div>
+              <input
+                type="email"
+                placeholder="Seu email"
+                {...register("email")}
+                className="w-full px-4 py-3 rounded-lg border border-gray-600 placeholder-gray-400 bg-gray-800 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+              )}
+            </div>
+
+            {/* Senha */}
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Digite sua senha"
+                {...register("password")}
+                className="w-full px-4 py-3 rounded-lg border border-gray-600 placeholder-gray-400 bg-gray-800 text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition"
+              />
+              <span
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <AiFillEyeInvisible color="#ddd" size={20} /> : <AiFillEye color="#ddd" size={20} />}
+              </span>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+              )}
+            </div>
+
+            {/* Botão */}
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition transform hover:scale-[1.02] shadow-md"
             >
-              {showPassword ? <AiFillEyeInvisible color="#ddd" /> : <AiFillEye color="#ddd" />}
-            </span>
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+              Cadastrar
+            </button>
+          </form>
+
+          {/* Links */}
+          <div className="text-center text-sm text-gray-300 mt-6 space-y-2">
+            <p>
+              Já tem uma conta?{" "}
+              <Link to="/sign-in" className="text-blue-400 hover:underline">
+                Entrar
+              </Link>
+            </p>
+            <Link to="/forgot-password" className="text-blue-400 hover:underline">
+              Esqueci minha senha
+            </Link>
           </div>
-
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
-          >
-            Cadastrar
-          </button>
-        </form>
-
-        <div className="text-center text-sm text-gray-300 mt-4">
-          Já tem uma conta?{" "}
-          <Link to="/sign-in" className="text-blue-400 hover:underline">
-            Entrar
-          </Link>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

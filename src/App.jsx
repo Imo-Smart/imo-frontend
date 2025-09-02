@@ -14,11 +14,17 @@ import About from './pages/About'
 import Footer from './components/Footer'
 
 import Head from './components/Head'
-import { ChatBox } from './components/ChatBox'
+import { ChatBox }  from './components/ChatBox'
+import AdminChat from './pages/AdminChat'
+import CreateProperty from './pages/CreateProperty'
+import PropertyDetails from './pages/PropertyDetails'
+import AdminPropertyManagement from './pages/AdminPropertyManagement'
+import EditProperty from './pages/EditProperty'
+import UsersList from './pages/UsersList'
 
 export function App() {
   return (
-    <>
+    <div className='text-black'>
         <Head />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -28,6 +34,12 @@ export function App() {
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+          <Route path='/chat-admin' element={<AdminChat />} />
+          <Route path='/create-property' element={<CreateProperty />} />
+          <Route path='/property/:id' element={<PropertyDetails />} />
+          <Route path='/admin/properties' element={<AdminPropertyManagement />} />
+          <Route path='/admin/edit-property/:id' element={<EditProperty />} />
+          <Route path='/admin/users' element={<UsersList />} />
         </Routes>
         <ToastContainer
           position="bottom-center"
@@ -42,7 +54,7 @@ export function App() {
           theme="dark"
         />
         <ChatBox />
-      <Footer />
-    </>
+        <Footer />
+    </div>
   )
 }
