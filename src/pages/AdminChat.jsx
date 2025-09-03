@@ -2,10 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import io from "socket.io-client";
 import axios from "axios";
 
-const ENDPOINT =
-  window.location.hostname === "localhost"
-    ? "http://127.0.0.1:3333"
-    : `${window.location.protocol}//${window.location.host}`;
+const ENDPOINT = "https://imo-9qbc.onrender.com";
 
 export default function AdminChat() {
   const socketRef = useRef(null);

@@ -1,6 +1,7 @@
 // src/pages/CreateProperty.jsx
 import React, { useState } from "react";
-import axios from "axios";
+
+import api from "../service/api";
 import { toast } from "react-toastify";
 
 export default function CreateProperty() {
@@ -57,8 +58,8 @@ export default function CreateProperty() {
         },
       };
 
-      const response = await axios.post(
-        "http://localhost:3333/api/properties/create-property",
+      const response = await api.post(
+        "/properties/create-property",
         data,
         config
       );

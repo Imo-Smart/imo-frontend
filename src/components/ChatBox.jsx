@@ -4,10 +4,7 @@ import { MdOutlineSupportAgent } from "react-icons/md";
 import Modal from "./Modal";
 import io from "socket.io-client";
 
-const ENDPOINT =
-  window.location.hostname === "localhost"
-    ? "http://127.0.0.1:3333"
-    : `${window.location.protocol}//${window.location.host}`;
+const ENDPOINT = "https://imo-9qbc.onrender.com";
 
 export function ChatBox() {
   const socketRef = useRef(null);

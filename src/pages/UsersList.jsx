@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import api from "../service/api";
 import { UserContext } from "../context/UserContext";
 
 const UsersList = () => {
@@ -16,7 +16,7 @@ const UsersList = () => {
           return;
         }
 
-        const { data } = await axios.get("http://localhost:3333/api/users/user", {
+        const { data } = await api.get("/api/users/user", {
           headers: { Authorization: `Bearer ${user.token}` },
         });
 

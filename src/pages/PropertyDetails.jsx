@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Thumbs } from "swiper/modules";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -10,11 +9,13 @@ import {
   Bath,
   Car,
   Sofa,
-} from "lucide-react"; // ícones bonitos
+} from "lucide-react"; // ícones
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
+
+import api from "../service/api";
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -25,9 +26,7 @@ const PropertyDetails = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const { data } = await axios.get(
-          `http://localhost:3333/api/properties/${id}`
-        );
+        const { data } = await api.get(`/api/properties/${id}`);
         setProperty(data);
       } catch (error) {
         console.error("Erro ao buscar imóvel:", error);

@@ -2,7 +2,8 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-import axios from "axios";
+
+import api from "../service/api";
 import { UserContext } from "../context/UserContext";
 import { toast } from "react-toastify";
 
@@ -13,7 +14,7 @@ export default function AdminPropertyManagement() {
 
   const fetchProperties = async () => {
     try {
-      const { data } = await axios.get("http://localhost:3333/api/properties", {
+      const { data } = await api.get("/api/properties", {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setProperties(data);
@@ -32,7 +33,7 @@ export default function AdminPropertyManagement() {
   const handleDelete = async (id) => {
     if (!window.confirm("Tem certeza que deseja apagar este imóvel?")) return;
     try {
-      await axios.delete(`http://localhost:3333/api/properties/${id}`, {
+      await api.delete(`/api/properties/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       toast.success("Imóvel apagado com sucesso!");

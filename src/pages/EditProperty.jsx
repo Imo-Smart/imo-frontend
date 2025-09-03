@@ -1,6 +1,7 @@
 // src/pages/EditProperty.jsx
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+
+import api from "../service/api";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -35,12 +36,9 @@ export default function EditProperty() {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const { data } = await axios.get(
-          `http://localhost:3333/api/properties/${id}`,
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        );
+        const { data } = await api.get(`/api/properties/${id}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
         setFormData({
           name: data.name,
           bedrooms: data.bedrooms,
@@ -104,11 +102,7 @@ export default function EditProperty() {
         },
       };
 
-      await axios.put(
-        `http://localhost:3333/api/properties/${id}`,
-        data,
-        config
-      );
+      await api.put(`/api/properties/${id}`, data, config);
 
       toast.success("Imóvel atualizado com sucesso!");
       navigate("/admin/properties");
