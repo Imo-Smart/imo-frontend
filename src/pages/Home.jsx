@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Carousel from "../components/Carousel";
-
 import Hero from "../components/Hero";
 import FeaturedProperties from "../components/FeaturedProperties";
 import Advantages from "../components/Advantages";
@@ -16,7 +15,6 @@ export default function Home() {
       const res = await api.get(url);
       let data = res.data;
 
-      // Filtrar por query se existir
       if (query) {
         data = data.filter((prop) =>
           prop.name.toLowerCase().includes(query.toLowerCase())
@@ -29,7 +27,6 @@ export default function Home() {
     }
   };
 
-  // Carregar todos inicialmente
   useEffect(() => {
     fetchProperties({});
   }, []);
@@ -37,26 +34,42 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800">
 
-       {/* Carrossel */}
+      {/* Carrossel */}
+      <section className="w-full overflow-hidden">
         <Carousel />
+      </section>
+
+      {/* Hero / Busca de imóveis */}
+      <section className="w-full px-4 md:px-16 -mt-20 md:-mt-32 relative z-10">
+        <Hero onSearch={fetchProperties} />
+      </section>
 
       {/* Imóveis em Destaque */}
-        <Hero onSearch={fetchProperties} />
+      <section className="w-full px-4 md:px-16 py-12 max-w-[1200px] mx-auto">
+        <FeaturedProperties properties={featuredProperties} />
+      </section>
 
       {/* Diferenciais */}
-      <FeaturedProperties properties={featuredProperties} />
-
-      <Advantages />
+      <section className="w-full px-4 md:px-16 py-12 bg-white">
+        <Advantages />
+      </section>
 
       {/* Depoimentos */}
-      <section id="depoimentos" className="max-w-4xl mx-auto py-12">
-        <h3 className="text-3xl font-bold text-center mb-8">O que dizem nossos clientes</h3>
-        <div className="space-y-6">
-          <blockquote className="bg-gray-100 p-6 rounded shadow">
-            “Site veloz, prático e fácil de usar.” <cite className="block mt-2 font-semibold">— Marcelo Rocha</cite>
+      <section
+        id="depoimentos"
+        className="max-w-4xl mx-auto py-12 px-4 md:px-0 space-y-6"
+      >
+        <h3 className="text-3xl font-bold text-center mb-8">
+          O que dizem nossos clientes
+        </h3>
+        <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
+          <blockquote className="flex-1 bg-gray-100 p-6 rounded-lg shadow hover:shadow-lg transition">
+            “Site veloz, prático e fácil de usar.”
+            <cite className="block mt-2 font-semibold">— Marcelo Rocha</cite>
           </blockquote>
-          <blockquote className="bg-gray-100 p-6 rounded shadow">
-            “Sempre inovando e extremamente solícitos.” <cite className="block mt-2 font-semibold">— Heloiza Scherer</cite>
+          <blockquote className="flex-1 bg-gray-100 p-6 rounded-lg shadow hover:shadow-lg transition">
+            “Sempre inovando e extremamente solícitos.”
+            <cite className="block mt-2 font-semibold">— Heloiza Scherer</cite>
           </blockquote>
         </div>
       </section>

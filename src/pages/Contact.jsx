@@ -1,79 +1,79 @@
 import { FiClock } from "react-icons/fi";
 import { IoLocationOutline } from "react-icons/io5";
-import {
-  FaEnvelope,
-  FaFacebook,
-  FaInstagram,
-  FaTwitter,
-  FaWhatsapp,
-} from "react-icons/fa";
-
-import { Helmet } from 'react-helmet-async'
+import { FaEnvelope, FaFacebook, FaInstagram, FaTwitter, FaWhatsapp } from "react-icons/fa";
+import { Helmet } from 'react-helmet-async';
 
 import { Map } from "../components/Map";
 
 export default function Contact() {
   return (
     <>
-        <Helmet>
-          <title>ImoSmart | Contato</title>
-        </Helmet>
-      <div className=" dark:bg-gray-900 flex flex-col md:flex-row justify-between items-center px-6 py-10 md:h-screen space-y-10 md:space-y-0">
+      <Helmet>
+        <title>ImoSmart | Contato</title>
+      </Helmet>
+
+      <div className="pt-28 px-6 md:px-16 pb-12 bg-gray-900 min-h-screen flex flex-col md:flex-row items-center md:items-start gap-12">
         {/* Mapa */}
-        <div className="flex-1 h-[600px] w-full flex justify-center items-center">
+        <div className="flex-1 w-full h-[400px] md:h-[600px] rounded-lg overflow-hidden shadow-lg">
           <Map />
         </div>
 
-        {/* Contato */}
-        <div className="flex-1 max-w-lg text-center md:text-left space-y-6">
-          <h1 className="text-4xl font-bold ">Nosso Contato</h1>
+        {/* Informações de Contato */}
+        <div className="flex-1 max-w-lg text-center md:text-left space-y-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-100">Nosso Contato</h1>
 
           {/* Agenda */}
-          <div className=" p-4 rounded-lg">
-            <h3 className="text-lg font-semibold flex items-center gap-2">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h3 className="text-lg font-semibold flex items-center gap-2 text-gray-100">
               Agenda <FiClock size={20} />
             </h3>
-            <div className="flex justify-between text-gray-600">
-              <p className="text-gray-500 dark:text-gray-400">Segunda a Sexta</p> <span className="text-gray-500 dark:text-gray-400">10hrs - 17hrs</span>
-            </div>
-            <div className="flex justify-between text-gray-600">
-              <p className="text-gray-500 dark:text-gray-400">Sábados</p> <span className="text-gray-500 dark:text-gray-400">10hrs - 16hrs</span>
+            <div className="mt-2 text-gray-300 space-y-1">
+              <div className="flex justify-between">
+                <span>Segunda a Sexta</span>
+                <span>10hrs - 17hrs</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Sábados</span>
+                <span>10hrs - 16hrs</span>
+              </div>
             </div>
           </div>
 
           {/* Endereço */}
-          <div className="p-4 rounded-lg">
-            <h3 className="text-lg font-semibold flex items-center gap-2">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h3 className="text-lg font-semibold flex items-center gap-2 text-gray-100">
               Endereço <IoLocationOutline size={20} />
             </h3>
-            <p className="text-gray-500 dark:text-gray-400">Rua João Moreira Borges N°20,<br /> Santa ines l <br />
-            São José dos Campos - SP</p>
+            <p className="mt-2 text-gray-300 leading-relaxed">
+              Rua João Moreira Borges N°20,<br />
+              Santa Inês<br />
+              São José dos Campos - SP
+            </p>
           </div>
 
           {/* Contato */}
-          <div className="space-y-3">
-            <a href="#" className="flex items-center gap-2 text-gray-500 dark:text-gray-400 ">
-              <FaWhatsapp size={20} className="" />
+          <div className="bg-gray-800 p-6 rounded-lg shadow-md space-y-3 text-gray-300">
+            <a href="#" className="flex items-center gap-2 hover:text-white transition">
+              <FaWhatsapp size={20} />
               (11) 99999-9999
             </a>
-
-            <a href="mailto:contato@barber.com" className="flex items-center gap-2 text-gray-500 dark:text-gray-400 ">
-              <FaEnvelope size={20} className="" />
-              contato@barber.com
+            <a href="mailto:contato@imosmart.com" className="flex items-center gap-2 hover:text-white transition">
+              <FaEnvelope size={20} />
+              contato@imosmart.com
             </a>
           </div>
 
           {/* Redes Sociais */}
-          <div className="mt-4">
-            <p className="text-lg font-semibold">Nossas redes sociais</p>
-            <div className="flex justify-center md:justify-start gap-4 mt-2">
-              <a href="#">
+          <div className="text-gray-300">
+            <p className="text-lg font-semibold mb-2">Nossas redes sociais</p>
+            <div className="flex justify-center md:justify-start gap-4">
+              <a href="#" className="hover:text-white transition">
                 <FaFacebook size={24} />
               </a>
-              <a href="#">
+              <a href="#" className="hover:text-white transition">
                 <FaInstagram size={24} />
               </a>
-              <a href="#">
+              <a href="#" className="hover:text-white transition">
                 <FaTwitter size={24} />
               </a>
             </div>

@@ -1,4 +1,3 @@
-// src/components/FeaturedProperties.jsx
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import api from "../service/api"
@@ -41,7 +40,7 @@ const FeaturedProperties = () => {
   }
 
   return (
-    <section id="imoveis" className="max-w-7xl mx-auto py-16 px-6">
+    <section id="imoveis" className="max-w-7xl mx-auto py-16 px-4 md:px-6">
       <h3 className="text-3xl font-bold text-center mb-12 text-gray-800">
         Imóveis em Destaque
       </h3>
@@ -60,10 +59,10 @@ const FeaturedProperties = () => {
             return (
               <div
                 key={prop._id}
-                className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden group"
+                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden flex flex-col"
               >
                 {/* Carrossel de imagens */}
-                <div className="relative h-56">
+                <div className="relative h-56 sm:h-64 md:h-56">
                   {prop.images && prop.images.length > 0 ? (
                     <Swiper
                       modules={[Navigation, Pagination]}
@@ -76,7 +75,7 @@ const FeaturedProperties = () => {
                           <img
                             src={img}
                             alt={`${prop.name} - foto ${index + 1}`}
-                            className="w-full h-56 object-cover"
+                            className="w-full h-56 sm:h-64 md:h-56 object-cover"
                           />
                         </SwiperSlide>
                       ))}
@@ -94,23 +93,23 @@ const FeaturedProperties = () => {
                 </div>
 
                 {/* Conteúdo */}
-                <div className="p-5 flex flex-col justify-between h-[260px]">
+                <div className="p-5 flex-1 flex flex-col justify-between">
                   <div>
-                    <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                    <h4 className="text-xl font-semibold text-gray-800 mb-2 line-clamp-1">
                       {prop.name}
                     </h4>
 
-                    <p className="text-gray-500 text-sm mb-2 line-clamp-2">
+                    <p className="text-gray-500 text-sm mb-2 line-clamp-3">
                       {prop.description}
                     </p>
 
                     {/* Stars rating */}
-                    <div className="flex items-center gap-1 mb-4">
+                    <div className="flex items-center gap-1 mb-3">
                       {renderStars(averageRating)}
                     </div>
 
                     {/* Infos com icons */}
-                    <div className="flex items-center gap-6 text-gray-600 text-sm mb-4">
+                    <div className="flex flex-wrap items-center gap-4 text-gray-600 text-sm mb-4">
                       <div className="flex items-center gap-1">
                         <Bed size={18} className="text-blue-600" />
                         <span>{prop.bedrooms}</span>
@@ -130,7 +129,7 @@ const FeaturedProperties = () => {
                   <div>
                     <div className="flex items-center justify-between mt-2">
                       <p className="text-lg font-bold text-blue-600">
-                        R$ {prop.price.toLocaleString("pt-BR")}
+                        {prop.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                       </p>
                       {prop.offer && (
                         <span className="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded">
