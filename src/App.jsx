@@ -21,6 +21,7 @@ import PropertyDetails from './pages/PropertyDetails'
 import AdminPropertyManagement from './pages/AdminPropertyManagement'
 import EditProperty from './pages/EditProperty'
 import UsersList from './pages/UsersList'
+import Profile from './pages/Profile'
 
 export function App() {
   return (
@@ -40,6 +41,7 @@ export function App() {
           <Route path='/admin/properties' element={<AdminPropertyManagement />} />
           <Route path='/admin/edit-property/:id' element={<EditProperty />} />
           <Route path='/admin/users' element={<UsersList />} />
+          <Route path='/profile' element={<Profile />} />
         </Routes>
         <ToastContainer
           position="bottom-center"
