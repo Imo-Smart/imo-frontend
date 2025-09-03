@@ -60,10 +60,22 @@ export default function Header() {
             <div className="relative bg-blue-950" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-1 text-white hover:text-blue-300 transition"
+                className="flex items-center gap-2 text-white hover:text-blue-300 transition"
               >
-                <AiOutlineUser size={20} /> {user.name}
+                {user.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={user.name}
+                    className="w-8 h-8 rounded-full object-cover border-2 border-white"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+                    {user.name?.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <span>{user.name}</span>
               </button>
+
 
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50 animate-slideDown">
@@ -75,6 +87,13 @@ export default function Header() {
                         onClick={() => setDropdownOpen(false)}
                       >
                         Criar Imóvel
+                      </Link>
+                      <Link
+                        to="/dashboard"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Dashboard
                       </Link>
                       <Link
                         to="/chat-admin"

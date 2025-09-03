@@ -1,4 +1,3 @@
-// src/context/UserContext.jsx
 import { createContext, useState, useEffect } from "react";
 
 export const UserContext = createContext();
@@ -6,10 +5,12 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  // Carrega usuário do localStorage ao iniciar
+  // Ao montar, tenta recuperar o user do localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem("userInfo");
-    if (storedUser) setUser(JSON.parse(storedUser));
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
   }, []);
 
   return (

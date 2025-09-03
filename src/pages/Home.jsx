@@ -3,10 +3,16 @@ import Carousel from "../components/Carousel";
 import Hero from "../components/Hero";
 import FeaturedProperties from "../components/FeaturedProperties";
 import Advantages from "../components/Advantages";
+import PropertiesPage from "../components/PropertiesPage";
 import api from "../service/api";
 
 export default function Home() {
   const [featuredProperties, setFeaturedProperties] = useState([]);
+  const [filters, setFilters] = useState({});
+
+  const handleSearch = (searchParams) => {
+    setFilters(searchParams); // atualiza filtros vindos do Hero
+  };
 
   const fetchProperties = async ({ category, query }) => {
     try {
@@ -39,9 +45,13 @@ export default function Home() {
         <Carousel />
       </section>
 
-      {/* Hero / Busca de imóveis */}
       <section className="w-full px-4 md:px-16 -mt-20 md:-mt-32 relative z-10">
-        <Hero onSearch={fetchProperties} />
+        <Hero onSearch={handleSearch} />
+      </section>
+
+      {/* Listagem de imóveis */}
+      <section className="w-full px-4 md:px-16 py-12 max-w-[1200px] mx-auto">
+        <PropertiesPage filters={filters} />
       </section>
 
       {/* Imóveis em Destaque */}

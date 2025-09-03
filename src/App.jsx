@@ -23,6 +23,7 @@ import EditProperty from './pages/EditProperty'
 import UsersList from './pages/UsersList'
 import Profile from './pages/Profile'
 import Properties from './pages/Properties'
+import Dashboard from './pages/Dashboard'
 
 export function App() {
   return (
@@ -44,6 +45,7 @@ export function App() {
           <Route path='/admin/users' element={<UsersList />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/properties' element={<Properties />} />
+          <Route path='/dashboard' element={<Dashboard />} />
         </Routes>
         <ToastContainer
           position="bottom-center"

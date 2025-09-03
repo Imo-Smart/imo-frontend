@@ -34,13 +34,26 @@ export default function SignIn() {
     try {
       const res = await api.post("/api/users/login", data);
       toast.success(`👋 Bem-vindo, ${res.data.name}!`);
+
+      // Armazenar dados do usuário no localStorage
       localStorage.setItem("userInfo", JSON.stringify(res.data));
-      navigate(redirect);
+
+      // Redirecionamento baseado no tipo de usuário
+      if (res.data.isAdmin) {
+        navigate("/dashboard"); // Admin vai para o Dashboard
+      } else {
+        navigate("/properties"); // Usuário comum vai para a página de imóveis
+      }
+
+      // Recarrega a página para atualizar estados globais e rotas protegidas
+      window.location.reload();
     } catch (err) {
       const message = err.response?.data?.message || "Erro ao realizar login";
       toast.error(message);
     }
   };
+
+
 
   return (
     <div className="h-screen w-screen relative pt-16">
