@@ -42,7 +42,7 @@ const PropertyDetails = () => {
     iconSize: [35, 35],
   });
 
-  const whatsappNumber = property.contactPhone || "554191043191";
+  const whatsappNumber = property.contactPhone || "5511234567890";
   const whatsappMessage = `Olá, tenho interesse no imóvel ${property.name} em ${property.address}. Poderia me passar mais informações?`;
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
