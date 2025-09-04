@@ -59,7 +59,7 @@ export default function CreateProperty() {
       };
 
       const response = await api.post(
-        "/properties/create-property",
+        "/api/properties/create-property",
         data,
         config
       );
